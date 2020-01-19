@@ -18,11 +18,9 @@
     <FileAlignment>512</FileAlignment>
     <DeployExtension>false</DeployExtension>
     <VSSDKTargetPlatformRegRootSuffix>Exp</VSSDKTargetPlatformRegRootSuffix>
-    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-    <FileUpgradeFlags />
-    <UpgradeBackupLocation />
-    <OldToolsVersion>14.0</OldToolsVersion>
+    <IncludeNuGetSharedFiles>true</IncludeNuGetSharedFiles>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -39,6 +37,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BrokeredServices\AsyncVSPackageInstallerProxy.cs" />
+    <Compile Include="BrokeredServices\ServicesUtility.cs" />
     <Compile Include="Commands\ShowErrorsCommand.cs" />
     <Compile Include="DataStreamFromComStream.cs" />
     <Compile Include="FontAndColorsRegistrationAttribute.cs" />
@@ -112,6 +112,10 @@
       <Project>{eea49a74-6efc-410e-9745-bad367ac151d}</Project>
       <Name>NuGet.VisualStudio.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NuGet.VisualStudio.Contracts\NuGet.VisualStudio.Contracts.csproj">
+      <Project>{e0839725-f8fe-4bc6-be6b-ff56b4ffe280}</Project>
+      <Name>NuGet.VisualStudio.Contracts</Name>
+    </ProjectReference>
     <!-- NuGet.VisualStudio.Implementation is referenced only to enable generation of .pkgdef entries via ProvideCodeBaseAttribute. -->
     <ProjectReference Include="..\NuGet.VisualStudio.Implementation\NuGet.VisualStudio.Implementation.csproj">
       <Project>{9623cf30-192c-4864-b419-29649169ae30}</Project>
@@ -129,7 +133,16 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Internal.VisualStudio.Shell.Embeddable" ExcludeAssets="build">
-      <Version>16.3.28923.271</Version>
+      <Version>16.4.29305.180</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.ServiceHub.Framework">
+      <Version>$(ServiceHubFrameworkVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" ExcludeAssets="build">
+      <Version>$(VSFrameworkVersion)</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Embeddable" ExcludeAssets="build">
+      <Version>$(VSFrameworkVersion)</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersionCore)" NoWarn="NU1605" />
   </ItemGroup>

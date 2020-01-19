@@ -2066,16 +2066,9 @@ namespace NuGet.PackageManagement
                 var projectUniqueNamesForBuildIntToUpdate
                     = buildIntegratedProjectsToUpdate.ToDictionary((project) => project.MSBuildProjectPath);
 
-                // get all build integrated projects of the solution which will be used to map project references
-                // of the target projects
-                var allBuildIntegratedProjects =
-                    (await SolutionManager.GetNuGetProjectsAsync()).OfType<BuildIntegratedNuGetProject>().ToList();
-
                 var dgFile = await DependencyGraphRestoreUtility.GetSolutionRestoreSpec(SolutionManager, referenceContext);
                 _buildIntegratedProjectsCache = dgFile;
                 var allSortedProjects = DependencyGraphSpec.SortPackagesByDependencyOrder(dgFile.Projects);
-
-                var msbuildProjectPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
                 foreach (var projectUniqueName in allSortedProjects.Select(e => e.RestoreMetadata.ProjectUniqueName))
                 {

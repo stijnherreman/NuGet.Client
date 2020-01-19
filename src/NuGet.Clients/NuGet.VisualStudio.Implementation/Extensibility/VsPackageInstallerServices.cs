@@ -10,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
-using NuGet.Configuration;
 using NuGet.PackageManagement;
 using NuGet.PackageManagement.VisualStudio;
 using NuGet.Packaging;
@@ -134,7 +133,7 @@ namespace NuGet.VisualStudio
                 throw new ArgumentNullException("project");
             }
 
-            var packages = new List<Packaging.PackageReference>();
+            var packages = new List<PackageReference>();
 
             if (_solutionManager != null
                 && !string.IsNullOrEmpty(_solutionManager.SolutionDirectory))
