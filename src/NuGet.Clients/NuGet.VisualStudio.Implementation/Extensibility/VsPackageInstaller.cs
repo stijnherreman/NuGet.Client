@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Threading;
 using NuGet.PackageManagement;
 using NuGet.PackageManagement.VisualStudio;
@@ -81,21 +82,42 @@ namespace NuGet.VisualStudio
                 NuGetUIThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
                     await NuGetUIThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
                     var vsHierarchy = VsHierarchyUtility.ToVsHierarchy(project);
-                    if (vsHierarchy != null &&
-                        VsHierarchyUtility.IsCPSCapabilityComplaint(vsHierarchy))
-                    {
-                        // Lazy load the CPS enabled JoinableTaskFactory for the UI.
-                        NuGetUIThreadHelper.SetJoinableTaskFactoryFromService(ProjectServiceAccessor.Value as IProjectServiceAccessor);
-
-                        PumpingJTF = new PumpingJTF(NuGetUIThreadHelper.JoinableTaskFactory);
-                        _isCPSJTFLoaded = true;
-                    }
+                    InitializeCPSPumpingJTF(vsHierarchy);
                 });
             }
 
             PumpingJTF.Run(asyncTask);
+        }
+
+        private async Task RunJTFWithCorrectContextAsync(string projectUniqueName, Func<Task> asyncTask)
+        {
+            if (!_isCPSJTFLoaded)
+            {
+                // TODO NK - Should the initialization be wrapped in a JTF instance?
+                NuGetUIThreadHelper.JoinableTaskFactory.Run(async () =>
+                {
+                    await NuGetUIThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                    var vsHierarchy = VsHierarchyUtility.ToVsHierarchy(projectUniqueName);
+                    InitializeCPSPumpingJTF(vsHierarchy);
+                });
+            }
+
+            await PumpingJTF.RunAsync(asyncTask);
+        }
+
+        private void InitializeCPSPumpingJTF(IVsHierarchy vsHierarchy)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            if (vsHierarchy != null &&
+                VsHierarchyUtility.IsCPSCapabilityComplaint(vsHierarchy))
+            {
+                // Lazy load the CPS enabled JoinableTaskFactory for the UI.
+                NuGetUIThreadHelper.SetJoinableTaskFactoryFromService(ProjectServiceAccessor.Value as IProjectServiceAccessor);
+
+                PumpingJTF = new PumpingJTF(NuGetUIThreadHelper.JoinableTaskFactory);
+                _isCPSJTFLoaded = true;
+            }
         }
 
         public void InstallLatestPackage(
@@ -336,14 +358,19 @@ namespace NuGet.VisualStudio
             {
                 NuGetVersion.TryParse(version, out nugetVersion);
             }
-            await InstallPackageAsync(source, projectUniqueName, packageId, nugetVersion, includePrerelease: true, ignoreDependencies: false);
+            // TODO NK - Make sure all the exceptions are covered, and enumerated.
+            await RunJTFWithCorrectContextAsync(
+                projectUniqueName,
+                () => InstallPackageAsync(source, projectUniqueName, packageId, nugetVersion, includePrerelease: true, ignoreDependencies: false));
         }
 
         public async Task InstallLatestPackageAsync(string source, string projectUniqueName, string packageId, bool includePrerelease, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await InstallPackageAsync(source, projectUniqueName, packageId, version: null, includePrerelease: includePrerelease, ignoreDependencies: false);
+            await RunJTFWithCorrectContextAsync(
+                projectUniqueName,
+                () => InstallPackageAsync(source, projectUniqueName, packageId, version: null, includePrerelease: includePrerelease, ignoreDependencies: false));
         }
 
         private static List<PackageIdentity> GetIdentitiesFromDict(IDictionary<string, string> packageVersions)

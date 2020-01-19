@@ -135,7 +135,7 @@
     <PackageReference Include="Microsoft.Internal.VisualStudio.Shell.Embeddable" ExcludeAssets="build">
       <Version>16.4.29305.180</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.ServiceHub.Framework">
+    <PackageReference Include="Microsoft.ServiceHub.Framework" NoWarn="NU1605">
       <Version>$(ServiceHubFrameworkVersion)</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" ExcludeAssets="build">

@@ -25,7 +25,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Threading" Version="$(VSThreadingVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="$(VSThreadingVersion)" />
     <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersionCore)" NoWarn="NU1605" />
-    <PackageReference Include="Microsoft.ServiceHub.Framework" Version="$(ServiceHubFrameworkVersion)" />
     <PackageReference Include="Microsoft.Internal.VisualStudio.Shell.Embeddable" Version="16.4.29305.180" ExcludeAssets="build"/>
     <PackageReference Include="Microsoft.ServiceHub.Framework" Version="$(ServiceHubFrameworkVersion)" NoWarn="NU1605"/>
   </ItemGroup>
