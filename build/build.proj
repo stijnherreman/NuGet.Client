@@ -365,7 +365,7 @@
       <DesktopInputTestAssembliesSpaced>$(DesktopInputTestAssemblies.Replace(';', ' '))</DesktopInputTestAssembliesSpaced>
       
       <!-- Build exe commands -->
-      <DesktopTestCommand>$(XunitConsoleExePath) $(DesktopInputTestAssembliesSpaced)</DesktopTestCommand>
+      <DesktopTestCommand>$(XunitConsoleExePath) $(DesktopInputTestAssembliesSpaced) -parallel all</DesktopTestCommand>
       <DesktopTestCommand Condition=" '$(TestResultsXunit)' != '' ">$(DesktopTestCommand) -$(TestResultOutputFormat) $(TestResultsXunit) $(Verbosity)</DesktopTestCommand>
     </PropertyGroup>
 
@@ -374,7 +374,7 @@
       <CoreInputTestAssembliesSpaced>$(CoreInputTestAssemblies.Replace(';', ' '))</CoreInputTestAssembliesSpaced>
 
       <VsTestLogger>--TestAdapterPath:$(XunitXmlLoggerDirectory) --logger:xunit;LogFileName=$(TestResultsFileName)-vsts.$(TestResultOutputFormat)</VsTestLogger>      
-      <VSTestCommand>$(DotnetExePath) vstest $(CoreInputTestAssembliesSpaced) $(VsTestLogger)</VSTestCommand>
+      <VSTestCommand>$(DotnetExePath) vstest $(CoreInputTestAssembliesSpaced) $(VsTestLogger) --parallel</VSTestCommand>
     </PropertyGroup>
 
     <!-- Desktop -->
