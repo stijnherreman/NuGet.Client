@@ -686,7 +686,7 @@ phases:
     demands: 
     - sh
     - VSTS_OS -equals Mac_Mojave_10.14
-    - Team -equals 'NuGet Client Team' 
+    - Team -equals NuGet Client Team 
 
   steps:
   - task: PowerShell@2
