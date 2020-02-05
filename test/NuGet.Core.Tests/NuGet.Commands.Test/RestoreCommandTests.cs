@@ -1583,22 +1583,34 @@ namespace NuGet.Commands.Test
                   ""frameworks"": {
                     ""net472"": {
                         ""dependencies"": {
-                            ""packageA"": ""1.0.0""
+                            ""A"": ""1.0.0"",
+                            ""C"": ""1.0.0""
                         }
                     }
                   }
                 }";
 
-                var packageA = new SimpleTestPackageContext("packageA", "1.0.0");
-                packageA.Dependencies.Add(new SimpleTestPackageContext("packageB", "[1.0.0-beta, 2.0.0)"));
+                var packageA = new SimpleTestPackageContext("A", "1.0.0");
+                var packageB200 = new SimpleTestPackageContext("B", "2.0.0");
+                var packageB300beta = new SimpleTestPackageContext("B", "3.0.0-beta");
+                var packageC = new SimpleTestPackageContext("C", "1.0.0");
+                var packageD = new SimpleTestPackageContext("D", "1.0.0");
+
+
+                packageA.Dependencies.Add(packageB200);
+                packageC.Dependencies.Add(packageD);
+                packageD.Dependencies.Add(new SimpleTestPackageContext("B", "2.5.0-beta"));
 
                 await SimpleTestPackageUtility.CreateFolderFeedV3WithoutDependenciesAsync(
                     pathContext.PackageSource,
                     PackageSaveMode.Defaultv3,
                     packageA,
-                    new SimpleTestPackageContext("packageB", "2.0.0-alpha"),
-                    new SimpleTestPackageContext("packageB", "2.0.0")
+                    packageB200,
+                    packageB300beta,
+                    packageC,
+                    packageD
                     );
+
                 // set up the project
 
                 var spec = JsonPackageSpecReader.GetPackageSpec(project1Json, projectName, Path.Combine(projectPath, $"{projectName}.json")).WithTestRestoreMetadata();
@@ -1616,14 +1628,38 @@ namespace NuGet.Commands.Test
 
                 // Assert
                 result.Success.Should().BeTrue(because: string.Join(Environment.NewLine, logger.Messages));
-                result.LockFile.Libraries.Count.Should().Be(2);
-                result.LockFile.Libraries.First().Name.Should().Be("dsadasda");
-                result.LockFile.Libraries.First().Version.ToNormalizedString().Should().Be("1.0.0");
-                result.LockFile.Libraries.Last().Name.Should().Be("packageB");
-                result.LockFile.Libraries.Last().Version.ToNormalizedString().Should().Be("2.0.0-alpha");
+                result.LockFile.Libraries.Count.Should().Be(4);
+                for (var i = 0; i < result.LockFile.Libraries.Count; i++)
+                {
+                    var library = result.LockFile.Libraries[i];
+                    switch (i)
+                    {
+                        case 0:
+                            library.Name.Should().Be("A");
+                            library.Version.ToNormalizedString().Should().Be("1.0.0");
+                            break;
+                        case 1:
+                            library.Name.Should().Be("B");
+                            library.Version.ToNormalizedString().Should().Be("3.0.0-beta");
+                            break;
+                        case 2:
+                            library.Name.Should().Be("C");
+                            library.Version.ToNormalizedString().Should().Be("1.0.0");
+                            break;
+                        case 3:
+                            library.Name.Should().Be("D");
+                            library.Version.ToNormalizedString().Should().Be("1.0.0");
+                            break;
+                        default:
+                            false.Should().BeTrue();
+                            break;
+                    }
+                }
+
+                result.LockFile.LogMessages.Count.Should().Be(1);
+                result.LockFile.LogMessages.Single().AsRestoreLogMessage().Code.Should().Be(NuGetLogCode.NU1603);
             }
         }
-
         // new tests would be deeper level where the bump is not obvious
     }
 }
