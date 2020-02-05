@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Moq;
 using NuGet.Common;
 using NuGet.Configuration;
@@ -1343,5 +1344,286 @@ namespace NuGet.Commands.Test
                 Assert.Equal(0, lockFile.Libraries.Count);
             }
         }
+
+        [Fact]
+        public async Task RestoreCommand_PrereleaseVersionsInStableRange_AreIgnoredAsync()
+        {
+            // Arrange
+            using (var pathContext = new SimpleTestPathContext())
+            {
+                var logger = new TestLogger();
+                var projectName = "TestProject";
+                var projectPath = Path.Combine(pathContext.SolutionRoot, projectName);
+                var sources = new List<PackageSource> { new PackageSource(pathContext.PackageSource) };
+
+                var project1Json = @"
+                {
+                  ""version"": ""1.0.0"",
+                  ""frameworks"": {
+                    ""net472"": {
+                        ""dependencies"": {
+                            ""packageA"": ""[4.0.0, 5.0.0)""
+                        }
+                    }
+                  }
+                }";
+
+                await SimpleTestPackageUtility.CreateFolderFeedV3Async(
+                    pathContext.PackageSource,
+                    PackageSaveMode.Defaultv3,
+                    new SimpleTestPackageContext("packageA", "4.6.0-alpha"),
+                    new SimpleTestPackageContext("packageA", "4.3.0-beta")
+                    );
+                // set up the project
+
+                var spec = JsonPackageSpecReader.GetPackageSpec(project1Json, projectName, Path.Combine(projectPath, $"{projectName}.json")).WithTestRestoreMetadata();
+
+                var request = new TestRestoreRequest(spec, sources, pathContext.UserPackagesFolder, logger)
+                {
+                    LockFilePath = Path.Combine(projectPath, "project.assets.json"),
+                    ProjectStyle = ProjectStyle.PackageReference
+                };
+
+                var command = new RestoreCommand(request);
+
+                // Act
+                var result = await command.ExecuteAsync();
+
+                // Assert
+                result.Success.Should().BeTrue();
+                result.LockFile.Libraries.Count.Should().Be(0);
+            }
+        }
+
+        [Fact]
+        public async Task RestoreCommand_PrereleaseVersionsInPrereleaseRange_AreAllowedAsync()
+        {
+            // Arrange
+            using (var pathContext = new SimpleTestPathContext())
+            {
+                var logger = new TestLogger();
+                var projectName = "TestProject";
+                var projectPath = Path.Combine(pathContext.SolutionRoot, projectName);
+                var sources = new List<PackageSource> { new PackageSource(pathContext.PackageSource) };
+
+                var project1Json = @"
+                {
+                  ""version"": ""1.0.0"",
+                  ""frameworks"": {
+                    ""net472"": {
+                        ""dependencies"": {
+                            ""packageA"": ""[4.0.0-alpha, 5.0.0)""
+                        }
+                    }
+                  }
+                }";
+
+                await SimpleTestPackageUtility.CreateFolderFeedV3Async(
+                    pathContext.PackageSource,
+                    PackageSaveMode.Defaultv3,
+                    new SimpleTestPackageContext("packageA", "4.3.0-beta"),
+                    new SimpleTestPackageContext("packageA", "4.5.0"),
+                    new SimpleTestPackageContext("packageA", "4.6.0")
+                    );
+                // set up the project
+
+                var spec = JsonPackageSpecReader.GetPackageSpec(project1Json, projectName, Path.Combine(projectPath, $"{projectName}.json")).WithTestRestoreMetadata();
+
+                var request = new TestRestoreRequest(spec, sources, pathContext.UserPackagesFolder, logger)
+                {
+                    LockFilePath = Path.Combine(projectPath, "project.assets.json"),
+                    ProjectStyle = ProjectStyle.PackageReference
+                };
+
+                var command = new RestoreCommand(request);
+
+                // Act
+                var result = await command.ExecuteAsync();
+
+                // Assert
+                result.Success.Should().BeTrue();
+                result.LockFile.Libraries.Count.Should().Be(1);
+                result.LockFile.Libraries.Single().Version.ToNormalizedString().Should().Be("4.3.0-beta");
+            }
+        }
+
+        [Fact]
+        public async Task RestoreCommand_PrereleaseVersionsTransitiveDependencyStableRange_AreIgnoredAsync()
+        {
+            // Arrange
+            using (var pathContext = new SimpleTestPathContext())
+            {
+                var logger = new TestLogger();
+                var projectName = "TestProject";
+                var projectPath = Path.Combine(pathContext.SolutionRoot, projectName);
+                var sources = new List<PackageSource> { new PackageSource(pathContext.PackageSource) };
+
+                var project1Json = @"
+                {
+                  ""version"": ""1.0.0"",
+                  ""frameworks"": {
+                    ""net472"": {
+                        ""dependencies"": {
+                            ""packageA"": ""1.0.0""
+                        }
+                    }
+                  }
+                }";
+
+                var packageA = new SimpleTestPackageContext("packageA", "1.0.0");
+                packageA.Dependencies.Add(new SimpleTestPackageContext("packageB", "[1.0.0, 2.0.0)"));
+
+                await SimpleTestPackageUtility.CreateFolderFeedV3WithoutDependenciesAsync(
+                    pathContext.PackageSource,
+                    PackageSaveMode.Defaultv3,
+                    packageA,
+                    new SimpleTestPackageContext("packageB", "2.0.0-alpha"),
+                    new SimpleTestPackageContext("packageB", "2.0.0")
+                    );
+                // set up the project
+
+                var spec = JsonPackageSpecReader.GetPackageSpec(project1Json, projectName, Path.Combine(projectPath, $"{projectName}.json")).WithTestRestoreMetadata();
+
+                var request = new TestRestoreRequest(spec, sources, pathContext.UserPackagesFolder, logger)
+                {
+                    LockFilePath = Path.Combine(projectPath, "project.assets.json"),
+                    ProjectStyle = ProjectStyle.PackageReference
+                };
+
+                var command = new RestoreCommand(request);
+
+                // Act
+                var result = await command.ExecuteAsync();
+
+                // Assert
+                result.Success.Should().BeTrue(because: string.Join(Environment.NewLine, logger.Messages));
+                result.LockFile.Libraries.Count.Should().Be(1);
+                result.LockFile.Libraries.Single().Version.ToNormalizedString().Should().Be("TODO NK");
+            }
+        }
+
+        [Fact]
+        public async Task RestoreCommand_PrereleaseVersionsTransitiveDependencyStableRange_AreAllowedAsync()
+        {
+            // Arrange
+            using (var pathContext = new SimpleTestPathContext())
+            {
+                var logger = new TestLogger();
+                var projectName = "TestProject";
+                var projectPath = Path.Combine(pathContext.SolutionRoot, projectName);
+                var sources = new List<PackageSource> { new PackageSource(pathContext.PackageSource) };
+
+                var project1Json = @"
+                {
+                  ""version"": ""1.0.0"",
+                  ""frameworks"": {
+                    ""net472"": {
+                        ""dependencies"": {
+                            ""packageA"": ""1.0.0""
+                        }
+                    }
+                  }
+                }";
+
+                var packageA = new SimpleTestPackageContext("packageA", "1.0.0");
+                packageA.Dependencies.Add(new SimpleTestPackageContext("packageB", "[1.0.0-beta, 2.0.0)"));
+
+                await SimpleTestPackageUtility.CreateFolderFeedV3WithoutDependenciesAsync(
+                    pathContext.PackageSource,
+                    PackageSaveMode.Defaultv3,
+                    packageA,
+                    new SimpleTestPackageContext("packageB", "2.0.0-alpha"),
+                    new SimpleTestPackageContext("packageB", "2.0.0")
+                    );
+                // set up the project
+
+                var spec = JsonPackageSpecReader.GetPackageSpec(project1Json, projectName, Path.Combine(projectPath, $"{projectName}.json")).WithTestRestoreMetadata();
+
+                var request = new TestRestoreRequest(spec, sources, pathContext.UserPackagesFolder, logger)
+                {
+                    LockFilePath = Path.Combine(projectPath, "project.assets.json"),
+                    ProjectStyle = ProjectStyle.PackageReference
+                };
+
+                var command = new RestoreCommand(request);
+
+                // Act
+                var result = await command.ExecuteAsync();
+
+                // Assert
+                result.Success.Should().BeTrue(because: string.Join(Environment.NewLine, logger.Messages));
+                result.LockFile.Libraries.Count.Should().Be(2);
+                result.LockFile.Libraries.First().Name.Should().Be("packageA");
+                result.LockFile.Libraries.First().Version.ToNormalizedString().Should().Be("1.0.0");
+                result.LockFile.Libraries.Last().Name.Should().Be("packageB");
+                result.LockFile.Libraries.Last().Version.ToNormalizedString().Should().Be("2.0.0-alpha");
+            }
+        }
+
+
+        // TODO NK -
+        // A 1.0.0 => B 2.0.0
+        // C 1.0.0 => D 1.0.0 => B 2.5.0-beta
+        // available packages
+        // A 1.0.0, B 2.0.0, B 3.0.0-beta, C 1.0.0, D 1.0.0
+        [Fact]
+        public async Task RestoreCommand_PrereleaseVersionsInRangesWithBothStableAndPrerelease_AreAllowedAsync()
+        {
+            // Arrange
+            using (var pathContext = new SimpleTestPathContext())
+            {
+                var logger = new TestLogger();
+                var projectName = "TestProject";
+                var projectPath = Path.Combine(pathContext.SolutionRoot, projectName);
+                var sources = new List<PackageSource> { new PackageSource(pathContext.PackageSource) };
+
+                var project1Json = @"
+                {
+                  ""version"": ""1.0.0"",
+                  ""frameworks"": {
+                    ""net472"": {
+                        ""dependencies"": {
+                            ""packageA"": ""1.0.0""
+                        }
+                    }
+                  }
+                }";
+
+                var packageA = new SimpleTestPackageContext("packageA", "1.0.0");
+                packageA.Dependencies.Add(new SimpleTestPackageContext("packageB", "[1.0.0-beta, 2.0.0)"));
+
+                await SimpleTestPackageUtility.CreateFolderFeedV3WithoutDependenciesAsync(
+                    pathContext.PackageSource,
+                    PackageSaveMode.Defaultv3,
+                    packageA,
+                    new SimpleTestPackageContext("packageB", "2.0.0-alpha"),
+                    new SimpleTestPackageContext("packageB", "2.0.0")
+                    );
+                // set up the project
+
+                var spec = JsonPackageSpecReader.GetPackageSpec(project1Json, projectName, Path.Combine(projectPath, $"{projectName}.json")).WithTestRestoreMetadata();
+
+                var request = new TestRestoreRequest(spec, sources, pathContext.UserPackagesFolder, logger)
+                {
+                    LockFilePath = Path.Combine(projectPath, "project.assets.json"),
+                    ProjectStyle = ProjectStyle.PackageReference
+                };
+
+                var command = new RestoreCommand(request);
+
+                // Act
+                var result = await command.ExecuteAsync();
+
+                // Assert
+                result.Success.Should().BeTrue(because: string.Join(Environment.NewLine, logger.Messages));
+                result.LockFile.Libraries.Count.Should().Be(2);
+                result.LockFile.Libraries.First().Name.Should().Be("dsadasda");
+                result.LockFile.Libraries.First().Version.ToNormalizedString().Should().Be("1.0.0");
+                result.LockFile.Libraries.Last().Name.Should().Be("packageB");
+                result.LockFile.Libraries.Last().Version.ToNormalizedString().Should().Be("2.0.0-alpha");
+            }
+        }
+
+        // new tests would be deeper level where the bump is not obvious
     }
 }
