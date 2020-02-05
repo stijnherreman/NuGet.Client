@@ -28,7 +28,7 @@ namespace NuGet.Commands.Test
 {
     public class RestoreCommandTests
     {
-        private static SignedPackageVerifierSettings _defaultSettings = SignedPackageVerifierSettings.GetDefault(TestEnvironmentVariableReader.EmptyInstance);
+        private static SignedPackageVerifierSettings DefaultSettings = SignedPackageVerifierSettings.GetDefault(TestEnvironmentVariableReader.EmptyInstance);
 
         [Fact]
         public async Task RestoreCommand_VerifyRuntimeSpecificAssetsAreNotIncludedForCompile_RuntimeOnlyAsync()
@@ -1015,7 +1015,7 @@ namespace NuGet.Commands.Test
 
                 signedPackageVerifier.Setup(x => x.VerifySignaturesAsync(
                     It.IsAny<ISignedPackageReader>(),
-                    It.Is<SignedPackageVerifierSettings>(s => SigningTestUtility.AreVerifierSettingsEqual(s, _defaultSettings)),
+                    It.Is<SignedPackageVerifierSettings>(s => SigningTestUtility.AreVerifierSettingsEqual(s, DefaultSettings)),
                     It.IsAny<CancellationToken>(),
                     It.IsAny<Guid>())).
                     ReturnsAsync(new VerifySignaturesResult(isValid: false, isSigned: true));
@@ -1085,7 +1085,7 @@ namespace NuGet.Commands.Test
 
                 signedPackageVerifier.Setup(x => x.VerifySignaturesAsync(
                     It.IsAny<ISignedPackageReader>(),
-                    It.Is<SignedPackageVerifierSettings>(s => SigningTestUtility.AreVerifierSettingsEqual(s, _defaultSettings)),
+                    It.Is<SignedPackageVerifierSettings>(s => SigningTestUtility.AreVerifierSettingsEqual(s, DefaultSettings)),
                     It.IsAny<CancellationToken>(),
                     It.IsAny<Guid>())).
                     ReturnsAsync(new VerifySignaturesResult(isValid: true, isSigned: true));
@@ -1390,7 +1390,7 @@ namespace NuGet.Commands.Test
                 var result = await command.ExecuteAsync();
 
                 // Assert
-                result.Success.Should().BeTrue();
+                result.Success.Should().BeFalse(because: string.Join(Environment.NewLine, logger.Messages));
                 result.LockFile.Libraries.Count.Should().Be(0);
             }
         }
@@ -1496,9 +1496,8 @@ namespace NuGet.Commands.Test
                 var result = await command.ExecuteAsync();
 
                 // Assert
-                result.Success.Should().BeTrue(because: string.Join(Environment.NewLine, logger.Messages));
+                result.Success.Should().BeFalse(because: string.Join(Environment.NewLine, logger.Messages));
                 result.LockFile.Libraries.Count.Should().Be(1);
-                result.LockFile.Libraries.Single().Version.ToNormalizedString().Should().Be("TODO NK");
             }
         }
 
@@ -1560,8 +1559,6 @@ namespace NuGet.Commands.Test
             }
         }
 
-
-        // TODO NK -
         // A 1.0.0 => B 2.0.0
         // C 1.0.0 => D 1.0.0 => B 2.5.0-beta
         // available packages
