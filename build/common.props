@@ -2,6 +2,7 @@
 <Project ToolsVersion="15.0">
   <PropertyGroup>
     <IsNetCoreProject>true</IsNetCoreProject>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <!-- When building on non-Windows machines, we need the reference assemblies to build full-framework assemblies. -->
