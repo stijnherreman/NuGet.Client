@@ -15,6 +15,20 @@ namespace NuGet.Tests.Apex
 
         // basic create for .net core template
         [NuGetWpfTheory]
+        [MemberData(nameof(GetAspNetFrameworkTemplates))]
+        public void CreateNewAspNetFrameworkProject_RestoresNewProject(ProjectTemplate projectTemplate)
+        {
+            // Arrange
+            EnsureVisualStudioHost();
+
+            using (var testContext = new ApexTestContext(VisualStudio, projectTemplate, XunitLogger, addNetStandardFeeds: true))
+            {
+                VisualStudio.AssertNoErrors();
+            }
+        }
+
+        // basic create for .net core template
+        [NuGetWpfTheory]
         [MemberData(nameof(GetNetCoreTemplates))]
         public void CreateNetCoreProject_RestoresNewProject(ProjectTemplate projectTemplate)
         {
@@ -57,6 +71,11 @@ namespace NuGet.Tests.Apex
         public static IEnumerable<object[]> GetNetCoreTemplates()
         {
             yield return new object[] { ProjectTemplate.NetStandardClassLib };
+        }
+
+        public static IEnumerable<object[]> GetAspNetFrameworkTemplates()
+        {
+            yield return new object[] { ProjectTemplate.AspNet50StarterWeb };
         }
     }
 }
