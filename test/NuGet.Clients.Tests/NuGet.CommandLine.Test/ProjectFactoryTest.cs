@@ -605,7 +605,6 @@ namespace NuGet.CommandLine
         <title />
         <authors>Author</authors>
         <owners />
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Description for Assembly.</description>
     </metadata>
     <files>

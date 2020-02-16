@@ -123,7 +123,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
     <dependencies>
       <group>
@@ -182,7 +181,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
     <dependencies>
       <group targetFramework="".NETFramework4.5"">
@@ -277,7 +275,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
     <contentFiles>
       <files include=""**/*"" buildAction=""Compile"" />
@@ -313,7 +310,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>JohnDoe</authors>
     <owners>JohnDoe</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Description</description>
   </metadata>
 </package>", ms.ReadToEnd());
@@ -345,7 +341,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>JohnDoe</authors>
     <owners>JohnDoe</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Description</description>
     <releaseNotes>Release Notes</releaseNotes>
   </metadata>
@@ -378,7 +373,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>JohnDoe</authors>
     <owners>JohnDoe</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName=""System.Web"" targetFramework="""" />
@@ -413,7 +407,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>JohnDoe</authors>
     <owners>JohnDoe</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
     <references>
       <reference file=""foo.dll"" />
@@ -453,7 +446,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
     <dependencies>
       <dependency id=""B"" />
@@ -494,7 +486,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
     <dependencies>
       <group targetFramework=""Silverlight4.0"">
@@ -534,7 +525,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
   </metadata>
 </package>", manifestStream.ReadToEnd());
@@ -574,7 +564,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Description</description>
     <serviceable>true</serviceable>
   </metadata>
@@ -619,7 +608,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Description</description>
     <packageTypes>
       <packageType name=""foo"" />
@@ -659,7 +647,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
   </metadata>
 </package>", manifestStream.ReadToEnd());
@@ -695,7 +682,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
   </metadata>
 </package>", manifestStream.ReadToEnd());
@@ -731,7 +717,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
   </metadata>
 </package>", manifestStream.ReadToEnd());
@@ -770,7 +755,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
   </metadata>
 </package>", manifestStream.ReadToEnd());
@@ -810,7 +794,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
   </metadata>
 </package>", manifestStream.ReadToEnd());
@@ -847,7 +830,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
   </metadata>
 </package>", manifestStream.ReadToEnd());
@@ -887,7 +869,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
   </metadata>
 </package>", manifestStream.ReadToEnd());
@@ -928,7 +909,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
   </metadata>
 </package>", manifestStream.ReadToEnd());
@@ -968,7 +948,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
     <references>
       <group targetFramework="".NETFramework3.0"">
@@ -1015,7 +994,6 @@ namespace NuGet.Packaging.Test
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
     <developmentDependency>true</developmentDependency>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
     <references>
       <group targetFramework="".NETFramework3.0"">
@@ -1060,7 +1038,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
     <references>
       <reference file=""one.dll"" />
@@ -1100,7 +1077,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>testAuthor</authors>
     <owners>testAuthor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
   </metadata>
 </package>", manifestStream.ReadToEnd());
@@ -1143,7 +1119,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>JohnDoe</authors>
     <owners>John</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
     <summary>Summary</summary>
     <copyright>Copyright 2012</copyright>
@@ -1209,7 +1184,6 @@ namespace NuGet.Packaging.Test
     <version>1.0.0</version>
     <authors>JohnDoe</authors>
     <owners>JohnDoe</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
     <summary>Summary</summary>
     <dependencies>
@@ -1970,7 +1944,6 @@ Description is required.");
     <description>This is the Description (With, Comma-Separated, Words, in Parentheses).</description>
     <language>en-US</language>
     <licenseUrl></licenseUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
 </package>";
 
@@ -1991,7 +1964,6 @@ Description is required.");
     <description>This is the Description (With, Comma-Separated, Words, in Parentheses).</description>
     <language>en-US</language>
     <licenseUrl>    </licenseUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
 </package>";
 
@@ -2013,7 +1985,6 @@ Description is required.");
     <language>en-US</language>
     <license type=""expression"">MIT</license>
     <licenseUrl>    </licenseUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
 </package>";
 

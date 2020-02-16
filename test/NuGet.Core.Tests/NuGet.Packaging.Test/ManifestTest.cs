@@ -309,7 +309,6 @@ namespace NuGet.Packaging.Test
     <version>1.0</version>
     <authors>Luan</authors>
     <owners>Luan</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
 
     <extra>This element is not defined in schema.</extra>
@@ -342,7 +341,6 @@ namespace NuGet.Packaging.Test
     <version>1.0</version>
     <authors>Luan</authors>
     <owners>Luan</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <developmentDependency>true</developmentDependency>
     <description>Descriptions</description>
 
@@ -376,7 +374,6 @@ namespace NuGet.Packaging.Test
     <version>1.0</version>
     <authors>Luan</authors>
     <owners>Luan</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <developmentDependency>true</developmentDependency>
     <description>Descriptions</description>
     <serviceable>true</serviceable>
@@ -523,7 +520,6 @@ namespace NuGet.Packaging.Test
     <version>1.0</version>
     <authors>Luan</authors>
     <owners>Luan</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
   </metadata>
 </package>";
@@ -547,7 +543,6 @@ namespace NuGet.Packaging.Test
     <version>1.0</version>
     <authors>Luan</authors>
     <owners>Luan</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
     <references>
         <group>
@@ -587,7 +582,6 @@ namespace NuGet.Packaging.Test
     <version>1.0</version>
     <authors>Luan</authors>
     <owners>Luan</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Descriptions</description>
     <references>
         <group>
