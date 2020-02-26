@@ -662,20 +662,7 @@ namespace Test.Utility.Signing
 
         public static void AssertOfflineRevocation(IEnumerable<ILogMessage> issues, LogLevel logLevel)
         {
-            string offlineRevocation;
-
-            if (RuntimeEnvironmentHelper.IsWindows)
-            {
-                offlineRevocation = "The revocation function was unable to check revocation because the revocation server was offline";
-            }
-            else if (RuntimeEnvironmentHelper.IsMacOSX)
-            {
-                offlineRevocation = "An incomplete certificate revocation check occurred.";
-            }
-            else
-            {
-                offlineRevocation = "unable to get certificate CRL";
-            }
+            string offlineRevocation = X509ChainStatusFlags.OfflineRevocation.ToString();
 
             Assert.Contains(issues, issue =>
                 issue.Code == NuGetLogCode.NU3018 &&
@@ -685,21 +672,8 @@ namespace Test.Utility.Signing
 
         public static void AssertRevocationStatusUnknown(IEnumerable<ILogMessage> issues, LogLevel logLevel)
         {
-            string revocationStatusUnknown;
+            string revocationStatusUnknown = X509ChainStatusFlags.RevocationStatusUnknown.ToString();
 
-            if (RuntimeEnvironmentHelper.IsWindows)
-            {
-                revocationStatusUnknown = "The revocation function was unable to check revocation for the certificate";
-            }
-            else if (RuntimeEnvironmentHelper.IsMacOSX)
-            {
-                revocationStatusUnknown = "An incomplete certificate revocation check occurred.";
-            }
-            else
-            {
-                revocationStatusUnknown = "unable to get certificate CRL";
-            }
-            
             Assert.Contains(issues, issue =>
                 issue.Code == NuGetLogCode.NU3018 &&
                 issue.Level == logLevel &&
@@ -708,20 +682,7 @@ namespace Test.Utility.Signing
 
         public static void AssertUntrustedRoot(IEnumerable<ILogMessage> issues, LogLevel logLevel)
         {
-            string untrustedRoot;
-
-            if (RuntimeEnvironmentHelper.IsWindows)
-            {
-                untrustedRoot = "A certificate chain processed, but terminated in a root certificate which is not trusted by the trust provider";
-            }
-            else if (RuntimeEnvironmentHelper.IsMacOSX)
-            {
-                untrustedRoot = "The certificate was not trusted.";
-            }
-            else
-            {
-                untrustedRoot = "self signed certificate";
-            }
+            string untrustedRoot = X509ChainStatusFlags.UntrustedRoot.ToString();
 
             Assert.Contains(issues, issue =>
                 issue.Code == NuGetLogCode.NU3018 &&
@@ -731,26 +692,14 @@ namespace Test.Utility.Signing
 
         public static void AssertNotTimeValid(IEnumerable<ILogMessage> issues, LogLevel logLevel)
         {
-            string notTimeValid;
+            string notTimeValid = X509ChainStatusFlags.NotTimeValid.ToString();
 
-            if (RuntimeEnvironmentHelper.IsWindows)
-            {
-                notTimeValid = "A required certificate is not within its validity period when verifying against the current system clock or the timestamp in the signed file";
-            }
-            else if (RuntimeEnvironmentHelper.IsMacOSX)
-            {
-                notTimeValid = "An expired certificate was detected.";
-            }
-            else
-            {
-                notTimeValid = "certificate has expired";
-            }
-            
             Assert.Contains(issues, issue =>
                 issue.Code == NuGetLogCode.NU3018 &&
                 issue.Level == logLevel &&
                 issue.Message.Contains(notTimeValid));
         }
+
 
         public static string AddSignatureLogPrefix(string log, PackageIdentity package, string source)
         {
