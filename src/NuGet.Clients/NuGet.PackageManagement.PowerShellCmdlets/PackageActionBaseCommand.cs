@@ -91,7 +91,7 @@ namespace NuGet.PackageManagement.PowerShellCmdlets
             {
                 await GetNuGetProjectAsync(ProjectName);
                 await CheckMissingPackagesAsync();
-                await CheckPackageManagementFormat();
+                //await CheckPackageManagementFormat();
             });
 
         }
