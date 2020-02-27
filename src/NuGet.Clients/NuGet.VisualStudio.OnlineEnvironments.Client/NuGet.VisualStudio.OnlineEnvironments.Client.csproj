@@ -1,0 +1,28 @@
+﻿<Project>
+  <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), 'README.md'))\build\common.props" />
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <TargetFramework>$(NETFXTargetFramework)</TargetFramework>
+    <Shipping>true</Shipping>
+    <Pack>true</Pack>
+    <IncludeInVsix>true</IncludeInVsix>
+    <RootNamespace>NuGet.VisualStudio</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.RpcContracts" Version="16.6.3-alpha" />
+    <PackageReference Include="Microsoft.VisualStudio.Workspace.VSIntegration" Version="16.3.43" />
+    <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersionCore)" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="$(VSFrameworkVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <VSCTCompile Include="Menus.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+      <SubType>Designer</SubType>
+    </VSCTCompile>
+  </ItemGroup>
+
+  <Import Project="$(BuildCommonDirectory)common.targets"/>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+</Project>
