@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.VisualStudio.Input;
 using Microsoft.VisualStudio.RpcContracts.OpenDocument;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.ServiceBroker;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Workspace.VSIntegration.UI;
 
