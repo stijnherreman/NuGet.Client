@@ -12,9 +12,6 @@ namespace NuGet.Versioning
     /// </summary>
     public class FloatRange : IEquatable<FloatRange>
     {
-        private readonly NuGetVersion _minVersion;
-        private readonly NuGetVersionFloatBehavior _floatBehavior;
-        private readonly string _releasePrefix;
 
         /// <summary>
         /// Create a floating range.
@@ -43,37 +40,38 @@ namespace NuGet.Versioning
         /// <param name="releasePrefix">The original release label. Invalid labels are allowed here.</param>
         public FloatRange(NuGetVersionFloatBehavior floatBehavior, NuGetVersion minVersion, string releasePrefix)
         {
-            _floatBehavior = floatBehavior;
-            _minVersion = minVersion;
-            _releasePrefix = releasePrefix;
+            FloatBehavior = floatBehavior;
+            MinVersion = minVersion;
+            OriginalReleasePrefix = releasePrefix;
 
-            if (_releasePrefix == null
+            if (OriginalReleasePrefix == null
                 && minVersion != null
                 && minVersion.IsPrerelease)
             {
                 // use the actual label if one was not given
-                _releasePrefix = minVersion.Release;
+                OriginalReleasePrefix = minVersion.Release;
             }
         }
 
         /// <summary>
         /// True if a min range exists.
         /// </summary>
-        public bool HasMinVersion => _minVersion != null;
+        public bool HasMinVersion => MinVersion != null;
+
         /// <summary>
         /// The minimum version of the float range. This is null for cases such as *
         /// </summary>
-        public NuGetVersion MinVersion => _minVersion;
+        public NuGetVersion MinVersion { get; private set; }
 
         /// <summary>
         /// Defined float behavior
         /// </summary>
-        public NuGetVersionFloatBehavior FloatBehavior => _floatBehavior;
+        public NuGetVersionFloatBehavior FloatBehavior { get; private set; }
 
         /// <summary>
         /// The original release label. Invalid labels are allowed here.
         /// </summary>
-        public string OriginalReleasePrefix => _releasePrefix;
+        public string OriginalReleasePrefix { get; private set; }
 
         /// <summary>
         /// True if the given version falls into the floating range.
@@ -85,73 +83,73 @@ namespace NuGet.Versioning
                 throw new ArgumentNullException(nameof(version));
             }
 
-            if (_floatBehavior == NuGetVersionFloatBehavior.AbsoluteLatest)
+            if (FloatBehavior == NuGetVersionFloatBehavior.AbsoluteLatest)
             {
                 return true;
             }
 
-            if (_floatBehavior == NuGetVersionFloatBehavior.Major
+            if (FloatBehavior == NuGetVersionFloatBehavior.Major
                 && !version.IsPrerelease)
             {
                 return true;
             }
 
-            if (_minVersion != null)
+            if (MinVersion != null)
             {
                 // everything beyond this point requires a version
-                if (_floatBehavior == NuGetVersionFloatBehavior.PrereleaseRevision)
+                if (FloatBehavior == NuGetVersionFloatBehavior.PrereleaseRevision)
                 {
                     // allow the stable version to match
-                    return _minVersion.Major == version.Major
-                       && _minVersion.Minor == version.Minor
-                       && _minVersion.Patch == version.Patch
-                       && ((version.IsPrerelease && version.Release.StartsWith(_releasePrefix, StringComparison.OrdinalIgnoreCase))
+                    return MinVersion.Major == version.Major
+                       && MinVersion.Minor == version.Minor
+                       && MinVersion.Patch == version.Patch
+                       && ((version.IsPrerelease && version.Release.StartsWith(OriginalReleasePrefix, StringComparison.OrdinalIgnoreCase))
                            || !version.IsPrerelease);
                 }
-                else if (_floatBehavior == NuGetVersionFloatBehavior.PrereleasePatch)
+                else if (FloatBehavior == NuGetVersionFloatBehavior.PrereleasePatch)
                 {
                     // allow the stable version to match
-                    return _minVersion.Major == version.Major
-                       && _minVersion.Minor == version.Minor
-                       && ((version.IsPrerelease && version.Release.StartsWith(_releasePrefix, StringComparison.OrdinalIgnoreCase))
+                    return MinVersion.Major == version.Major
+                       && MinVersion.Minor == version.Minor
+                       && ((version.IsPrerelease && version.Release.StartsWith(OriginalReleasePrefix, StringComparison.OrdinalIgnoreCase))
                            || !version.IsPrerelease);
                 }
                 else if (FloatBehavior == NuGetVersionFloatBehavior.PrereleaseMinor)
                 {
                     // allow the stable version to match
-                    return _minVersion.Major == version.Major
-                       && ((version.IsPrerelease && version.Release.StartsWith(_releasePrefix, StringComparison.OrdinalIgnoreCase))
+                    return MinVersion.Major == version.Major
+                       && ((version.IsPrerelease && version.Release.StartsWith(OriginalReleasePrefix, StringComparison.OrdinalIgnoreCase))
                            || !version.IsPrerelease);
                 }
                 else if (FloatBehavior == NuGetVersionFloatBehavior.PrereleaseMajor)
                 {
                     // allow the stable version to match
-                    return (version.IsPrerelease && version.Release.StartsWith(_releasePrefix, StringComparison.OrdinalIgnoreCase))
+                    return (version.IsPrerelease && version.Release.StartsWith(OriginalReleasePrefix, StringComparison.OrdinalIgnoreCase))
                            || !version.IsPrerelease;
                 }
-                else if (_floatBehavior == NuGetVersionFloatBehavior.Prerelease)
+                else if (FloatBehavior == NuGetVersionFloatBehavior.Prerelease)
                 {
                     // allow the stable version to match
-                    return VersionComparer.Version.Equals(_minVersion, version)
-                           && ((version.IsPrerelease && version.Release.StartsWith(_releasePrefix, StringComparison.OrdinalIgnoreCase))
+                    return VersionComparer.Version.Equals(MinVersion, version)
+                           && ((version.IsPrerelease && version.Release.StartsWith(OriginalReleasePrefix, StringComparison.OrdinalIgnoreCase))
                                || !version.IsPrerelease);
                 }
-                else if (_floatBehavior == NuGetVersionFloatBehavior.Revision)
+                else if (FloatBehavior == NuGetVersionFloatBehavior.Revision)
                 {
-                    return _minVersion.Major == version.Major
-                           && _minVersion.Minor == version.Minor
-                           && _minVersion.Patch == version.Patch
+                    return MinVersion.Major == version.Major
+                           && MinVersion.Minor == version.Minor
+                           && MinVersion.Patch == version.Patch
                            && !version.IsPrerelease;
                 }
-                else if (_floatBehavior == NuGetVersionFloatBehavior.Patch)
+                else if (FloatBehavior == NuGetVersionFloatBehavior.Patch)
                 {
-                    return _minVersion.Major == version.Major
-                           && _minVersion.Minor == version.Minor
+                    return MinVersion.Major == version.Major
+                           && MinVersion.Minor == version.Minor
                            && !version.IsPrerelease;
                 }
-                else if (_floatBehavior == NuGetVersionFloatBehavior.Minor)
+                else if (FloatBehavior == NuGetVersionFloatBehavior.Minor)
                 {
-                    return _minVersion.Major == version.Major
+                    return MinVersion.Major == version.Major
                            && !version.IsPrerelease;
                 }
             }
@@ -321,13 +319,13 @@ namespace NuGet.Versioning
         public override string ToString()
         {
             var result = string.Empty;
-            switch (_floatBehavior)
+            switch (FloatBehavior)
             {
                 case NuGetVersionFloatBehavior.None:
                     result = MinVersion.ToNormalizedString();
                     break;
                 case NuGetVersionFloatBehavior.Prerelease:
-                    result = string.Format(VersionFormatter.Instance, "{0:V}-{1}*", MinVersion, _releasePrefix);
+                    result = string.Format(VersionFormatter.Instance, "{0:V}-{1}*", MinVersion, OriginalReleasePrefix);
                     break;
                 case NuGetVersionFloatBehavior.Revision:
                     result = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.{2}.*", MinVersion.Major, MinVersion.Minor, MinVersion.Patch);
@@ -342,16 +340,16 @@ namespace NuGet.Versioning
                     result = "*";
                     break;
                 case NuGetVersionFloatBehavior.PrereleaseRevision:
-                    result = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.{2}.*-{3}*", MinVersion.Major, MinVersion.Minor, MinVersion.Patch, _releasePrefix);
+                    result = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.{2}.*-{3}*", MinVersion.Major, MinVersion.Minor, MinVersion.Patch, OriginalReleasePrefix);
                     break;
                 case NuGetVersionFloatBehavior.PrereleasePatch:
-                    result = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.*-{2}*", MinVersion.Major, MinVersion.Minor, _releasePrefix);
+                    result = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.*-{2}*", MinVersion.Major, MinVersion.Minor, OriginalReleasePrefix);
                     break;
                 case NuGetVersionFloatBehavior.PrereleaseMinor:
-                    result = string.Format(CultureInfo.InvariantCulture, "{0}.*-{1}*", MinVersion.Major, _releasePrefix);
+                    result = string.Format(CultureInfo.InvariantCulture, "{0}.*-{1}*", MinVersion.Major, OriginalReleasePrefix);
                     break;
                 case NuGetVersionFloatBehavior.PrereleaseMajor:
-                    result = string.Format(CultureInfo.InvariantCulture, "*-{1}*", MinVersion.Major, _releasePrefix);
+                    result = string.Format(CultureInfo.InvariantCulture, "*-{1}*", MinVersion.Major, OriginalReleasePrefix);
                     break;
                 case NuGetVersionFloatBehavior.AbsoluteLatest:
                     result = "*-*";
