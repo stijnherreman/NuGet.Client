@@ -700,7 +700,6 @@ namespace Test.Utility.Signing
                 issue.Message.Contains(notTimeValid));
         }
 
-
         public static string AddSignatureLogPrefix(string log, PackageIdentity package, string source)
         {
             return $"{string.Format(_signatureLogPrefix, package.Id, package.Version, source)} {log}";
