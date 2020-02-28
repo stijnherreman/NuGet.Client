@@ -214,11 +214,11 @@ namespace NuGet.Packaging.Signing
 
         internal static bool TryGetStatusAndMessage(X509ChainStatus[] chainStatuses, X509ChainStatusFlags status, out IEnumerable<string> statusAndmessages)
         {
-            statusAndmessages = null;
+            statusAndMessages = null;
 
             if (ChainStatusListIncludesStatus(chainStatuses, status, out var chainStatus))
             {
-                statusAndmessages = GetStatusAndMessagesFromChainStatuses(chainStatus);
+                statusAndMessages = GetStatusAndMessagesFromChainStatuses(chainStatus);
 
                 return true;
             }
