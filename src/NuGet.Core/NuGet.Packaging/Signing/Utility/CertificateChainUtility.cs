@@ -212,7 +212,7 @@ namespace NuGet.Packaging.Signing
             return chainStatus.Any();
         }
 
-        internal static bool TryGetStatusAndMessage(X509ChainStatus[] chainStatuses, X509ChainStatusFlags status, out IEnumerable<string> statusAndmessages)
+        internal static bool TryGetStatusAndMessage(X509ChainStatus[] chainStatuses, X509ChainStatusFlags status, out IEnumerable<string> statusAndMessages)
         {
             statusAndMessages = null;
 
