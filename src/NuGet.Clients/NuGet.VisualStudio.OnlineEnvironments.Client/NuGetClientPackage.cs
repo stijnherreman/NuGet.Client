@@ -12,6 +12,6 @@ namespace NuGet.VisualStudio.OnlineEnvironments.Client
     [ProvideMenuResource("Menus.ctmenu", 1)]
     internal sealed class NuGetClientPackage : AsyncPackage
     {
-        public const string PackageGuid = "6431ADB1-9428-4173-A696-6DECA317034A";
+        public const string PackageGuid = "6431ADB1-9428-4173-A696-6DECA317034A"
     }
 }

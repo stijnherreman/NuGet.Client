@@ -22,11 +22,6 @@ namespace NuGet.VisualStudio.OnlineEnvironments.Client
         /// </summary>
         private readonly IWorkspaceCommandHandler _commandHandler;
 
-        /// <summary>
-        /// Extensions for the set of supported projects.
-        /// </summary>
-        private static readonly string[] SupportedProjectExtensions = new[] { ".csproj", ".vbproj" };
-
         [ImportingConstructor]
         public ProjectNodeExtender(
             JoinableTaskContext taskContext,
@@ -46,12 +41,14 @@ namespace NuGet.VisualStudio.OnlineEnvironments.Client
         /// </summary>
         public IWorkspaceCommandHandler ProvideCommandHandler(WorkspaceVisualNodeBase parentNode)
         {
-            if (NodeRepresentsAManagedProject(parentNode))
-            {
-                return _commandHandler;
-            }
+            return _commandHandler;
 
-            return null;
+            //if (NodeRepresentsAManagedProject(parentNode))
+            //{
+            //    return _commandHandler;
+            //}
+
+            //return null;
         }
 
         /// <summary>
@@ -74,8 +71,7 @@ namespace NuGet.VisualStudio.OnlineEnvironments.Client
             return node != null
                 && node.VSSelectionMoniker != null
                 && node.VSSelectionKind == CloudEnvironment.SolutionViewProjectGuid
-                && node.NodeMoniker != null
-                && SupportedProjectExtensions.Any(extension => node.NodeMoniker.EndsWith(extension, StringComparison.OrdinalIgnoreCase));
+                && node.NodeMoniker != null;
         }
     }
 }
