@@ -26,13 +26,13 @@
   <Commands package="PackageGuidString">
 
     <Groups>
-      <Group guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="groupidEditProjectFile" priority="0x0900">
+      <Group guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="groupidRestoreNuGetPackages" priority="0x0900">
         <Parent guid="guidWorkspaceExplorerToolWindowPackageCmdSet" id="idmWSE_ContextMenu"/>
       </Group>
     </Groups>
 
     <Buttons>
-      <Button guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="cmdidEditProjectFile" priority="0x0100" type="Button">
+      <Button guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="cmdidRestoreNuGetPackages" priority="0x0100" type="Button">
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
@@ -49,8 +49,8 @@
 
   <CommandPlacements>
 
-    <CommandPlacement guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="cmdidEditProjectFile" priority="0x0100">
-      <Parent guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="groupidEditProjectFile" />
+    <CommandPlacement guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="cmdidRestoreNuGetPackages" priority="0x0100">
+      <Parent guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="groupidRestoreNuGetPackages" />
     </CommandPlacement>
   
   </CommandPlacements>
@@ -61,8 +61,8 @@
   
     <!-- Guid and IDs for our commands and groups -->
     <GuidSymbol name="guidNuGetOnlineEnvironmentsClientProjectCommandSet" value="{760B5FEF-9F63-4788-A9FC-6B0186690DD1}">
-      <IDSymbol name="cmdidEditProjectFile" value="0x0100" />
-      <IDSymbol name="groupidEditProjectFile" value="0x0101" />
+      <IDSymbol name="cmdidRestoreNuGetPackages" value="0x0100" />
+      <IDSymbol name="groupidRestoreNuGetPackages" value="0x0101" />
     </GuidSymbol>
 
     <!-- Guid and IDs copied from Microsoft.VisualStudio.Workspace.VSIntegration -->

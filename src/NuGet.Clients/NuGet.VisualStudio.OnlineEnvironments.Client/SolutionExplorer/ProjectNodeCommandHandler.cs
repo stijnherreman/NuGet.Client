@@ -32,7 +32,7 @@ namespace NuGet.VisualStudio.OnlineEnvironments.Client
         /// The command handlers priority. If there are multiple handlers for a given node
         /// then they are called in order of decreasing priority.
         /// </summary>
-        public int Priority => 2000;
+        public int Priority => 1900;
 
         /// <summary>
         /// Whether or not this handler should be ignored when multiple nodes are selected.
@@ -47,7 +47,7 @@ namespace NuGet.VisualStudio.OnlineEnvironments.Client
 
                 switch (nCmdIDInt)
                 {
-                    case NuGetClientProjectCommandIds.EditProjectFile:
+                    case PkgCmdIDList.CmdidRestorePackages:
                         OpenFile(selection.SingleOrDefault());
 
                         return 0;
@@ -66,7 +66,7 @@ namespace NuGet.VisualStudio.OnlineEnvironments.Client
 
                 switch (nCmdIDInt)
                 {
-                    case NuGetClientProjectCommandIds.EditProjectFile:
+                    case PkgCmdIDList.CmdidRestorePackages:
                         cmdf = (uint)(Microsoft.VisualStudio.OLE.Interop.OLECMDF.OLECMDF_ENABLED | Microsoft.VisualStudio.OLE.Interop.OLECMDF.OLECMDF_SUPPORTED);
                         handled = true;
                         break;

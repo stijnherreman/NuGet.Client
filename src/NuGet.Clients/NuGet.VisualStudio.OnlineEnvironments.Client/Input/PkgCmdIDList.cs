@@ -3,11 +3,8 @@
 
 namespace NuGet.VisualStudio.OnlineEnvironments.Client
 {
-    /// <summary>
-    /// Specifies the IDs of commands related to managed project files.
-    /// </summary>
-    internal static class NuGetClientProjectCommandIds
+    internal static class PkgCmdIDList
     {
-        public const int EditProjectFile = 0x0100;
+        public const int CmdidRestorePackages = 0x0100;
     }
 }
