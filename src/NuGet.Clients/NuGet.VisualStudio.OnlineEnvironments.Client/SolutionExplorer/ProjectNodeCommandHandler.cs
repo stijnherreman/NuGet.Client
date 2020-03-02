@@ -1,16 +1,17 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.Input;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.RpcContracts.OpenDocument;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.ServiceBroker;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Workspace.VSIntegration.UI;
 
-namespace Microsoft.VisualStudio.SolutionExplorer
+namespace NuGet.VisualStudio.OnlineEnvironments.Client
 {
     /// <summary>
     /// Extends the Solution Explorer in cloud-connected scenarios by handling commands
@@ -40,13 +41,13 @@ namespace Microsoft.VisualStudio.SolutionExplorer
 
         public int Exec(List<WorkspaceVisualNodeBase> selection, Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
-            if (pguidCmdGroup == CommandGroup.ManagedProjectSystemClientProjectCommandSetGuid)
+            if (pguidCmdGroup == CommandGroup.NuGetOnlineEnvironmentsClientProjectCommandSetGuid)
             {
                 var nCmdIDInt = (int)nCmdID;
 
                 switch (nCmdIDInt)
                 {
-                    case ManagedProjectSystemClientProjectCommandIds.EditProjectFile:
+                    case NuGetClientProjectCommandIds.EditProjectFile:
                         OpenFile(selection.SingleOrDefault());
 
                         return 0;
@@ -59,14 +60,14 @@ namespace Microsoft.VisualStudio.SolutionExplorer
         {
             bool handled = false;
 
-            if (pguidCmdGroup == CommandGroup.ManagedProjectSystemClientProjectCommandSetGuid)
+            if (pguidCmdGroup == CommandGroup.NuGetOnlineEnvironmentsClientProjectCommandSetGuid)
             {
                 var nCmdIDInt = (int)nCmdID;
 
                 switch (nCmdIDInt)
                 {
-                    case ManagedProjectSystemClientProjectCommandIds.EditProjectFile:
-                        cmdf = (uint)(OLE.Interop.OLECMDF.OLECMDF_ENABLED | OLE.Interop.OLECMDF.OLECMDF_SUPPORTED);
+                    case NuGetClientProjectCommandIds.EditProjectFile:
+                        cmdf = (uint)(Microsoft.VisualStudio.OLE.Interop.OLECMDF.OLECMDF_ENABLED | Microsoft.VisualStudio.OLE.Interop.OLECMDF.OLECMDF_SUPPORTED);
                         handled = true;
                         break;
                 }

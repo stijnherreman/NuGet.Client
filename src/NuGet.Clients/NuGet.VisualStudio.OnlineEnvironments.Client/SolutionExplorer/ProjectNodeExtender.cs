@@ -1,4 +1,5 @@
-// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 using System.ComponentModel.Composition;
@@ -7,7 +8,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using Microsoft.VisualStudio.Workspace.VSIntegration.UI;
 
-namespace Microsoft.VisualStudio.SolutionExplorer
+namespace NuGet.VisualStudio.OnlineEnvironments.Client
 {
     /// <summary>
     /// Extends the Solution Explorer in cloud-connected scenarios by adding command
@@ -24,7 +25,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
         /// <summary>
         /// Extensions for the set of supported projects.
         /// </summary>
-        private static readonly string[] s_supportedProjectExtensions = new[] { ".csproj", ".vbproj" };
+        private static readonly string[] SupportedProjectExtensions = new[] { ".csproj", ".vbproj" };
 
         [ImportingConstructor]
         public ProjectNodeExtender(
@@ -74,7 +75,7 @@ namespace Microsoft.VisualStudio.SolutionExplorer
                 && node.VSSelectionMoniker != null
                 && node.VSSelectionKind == CloudEnvironment.SolutionViewProjectGuid
                 && node.NodeMoniker != null
-                && s_supportedProjectExtensions.Any(extension => node.NodeMoniker.EndsWith(extension, StringComparison.OrdinalIgnoreCase));
+                && SupportedProjectExtensions.Any(extension => node.NodeMoniker.EndsWith(extension, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

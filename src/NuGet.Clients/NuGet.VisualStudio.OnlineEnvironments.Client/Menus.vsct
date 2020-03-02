@@ -26,20 +26,21 @@
   <Commands package="PackageGuidString">
 
     <Groups>
-      <Group guid="guidManagedProjectSystemClientProjectCommandSet" id="groupidEditProjectFile" priority="0x0900">
+      <Group guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="groupidEditProjectFile" priority="0x0900">
         <Parent guid="guidWorkspaceExplorerToolWindowPackageCmdSet" id="idmWSE_ContextMenu"/>
       </Group>
     </Groups>
 
     <Buttons>
-      <Button guid="guidManagedProjectSystemClientProjectCommandSet" id="cmdidEditProjectFile" priority="0x0100" type="Button">
+      <Button guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="cmdidEditProjectFile" priority="0x0100" type="Button">
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
+          <!-- TODO NK - remember to rename the command name. Consider changing it to something similar to the current one.-->
           <ButtonText>Do NuGet stuff</ButtonText>
-          <CommandName>SolutionExplorer.Project.Edit</CommandName>
-          <CanonicalName>SolutionExplorer.Project.Edit</CanonicalName>
-          <LocCanonicalName>SolutionExplorer.Project.Edit</LocCanonicalName>
+          <CommandName>SolutionExplorer.Project.RestoreNuGetPackages</CommandName>
+          <CanonicalName>SolutionExplorer.Project.RestoreNuGetPackages</CanonicalName>
+          <LocCanonicalName>SolutionExplorer.Project.RestoreNuGetPackages</LocCanonicalName>
         </Strings>
       </Button>
     </Buttons>
@@ -48,8 +49,8 @@
 
   <CommandPlacements>
 
-    <CommandPlacement guid="guidManagedProjectSystemClientProjectCommandSet" id="cmdidEditProjectFile" priority="0x0100">
-      <Parent guid="guidManagedProjectSystemClientProjectCommandSet" id="groupidEditProjectFile" />
+    <CommandPlacement guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="cmdidEditProjectFile" priority="0x0100">
+      <Parent guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="groupidEditProjectFile" />
     </CommandPlacement>
   
   </CommandPlacements>
@@ -59,7 +60,7 @@
     <GuidSymbol name="PackageGuidString" value="{6431ADB1-9428-4173-A696-6DECA317034A}" />
   
     <!-- Guid and IDs for our commands and groups -->
-    <GuidSymbol name="guidManagedProjectSystemClientProjectCommandSet" value="{28C12D02-11CB-437D-B84D-9CEA7A5333A3}">
+    <GuidSymbol name="guidNuGetOnlineEnvironmentsClientProjectCommandSet" value="{760B5FEF-9F63-4788-A9FC-6B0186690DD1}">
       <IDSymbol name="cmdidEditProjectFile" value="0x0100" />
       <IDSymbol name="groupidEditProjectFile" value="0x0101" />
     </GuidSymbol>
