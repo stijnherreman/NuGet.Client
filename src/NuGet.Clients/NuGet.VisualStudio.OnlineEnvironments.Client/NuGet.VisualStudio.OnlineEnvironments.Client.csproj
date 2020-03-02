@@ -1,6 +1,8 @@
-<Project>
+﻿<Project>
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), 'README.md'))\build\common.props" />
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(VSSDKRoot)\build\Microsoft.VSSDK.BuildTools.props" Condition="'$(IsXplat)' != 'true' AND '$(IsBuildOnlyXPLATProjects)' != 'true' " />
+
   <PropertyGroup>
     <TargetFramework>$(NETFXTargetFramework)</TargetFramework>
     <Shipping>true</Shipping>
@@ -8,6 +10,12 @@
     <IncludeInVsix>true</IncludeInVsix>
     <RootNamespace>NuGet.VisualStudio</RootNamespace>
     <SkipShared>true</SkipShared>
+
+    <!-- VSIX -->
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <CreateVsixContainer>false</CreateVsixContainer>
+    <DeployExtension>false</DeployExtension>
+
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,4 +35,6 @@
 
   <Import Project="$(BuildCommonDirectory)common.targets" />
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(IsXplat)' != 'true' AND '$(IsBuildOnlyXPLATProjects)' != 'true' " />
+  <Import Project="$(VSSDKRoot)\build\Microsoft.VSSDK.BuildTools.targets" Condition="'$(IsXplat)' != 'true' AND '$(IsBuildOnlyXPLATProjects)' != 'true' " />
 </Project>
