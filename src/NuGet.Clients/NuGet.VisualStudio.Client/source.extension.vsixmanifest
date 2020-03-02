@@ -35,5 +35,6 @@
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="File" Path="Newtonsoft.Json.dll" AssemblyName="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed" />
         <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="NuGetConsole.Host.PowerShell" Path="|NuGetConsole.Host.PowerShell|" />
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="NuGet.VisualStudio.OnlineEnvironments.Client" Path="|NuGet.VisualStudio.OnlineEnvironments.Client;PkgdefProjectOutputGroup|" />
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="NuGet.VisualStudio.OnlineEnvironments.Client" Path="|NuGet.VisualStudio.OnlineEnvironments.Client|" />
     </Assets>
 </PackageManifest>
