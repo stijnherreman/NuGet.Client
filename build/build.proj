@@ -420,7 +420,6 @@
 
     <GenerateMarkdownDoc
       ProjectFiles="@(AllSolutionProjects)"
-      Descriptions="@(ProjectDescriptions)"
       OutputFile="$(RepositoryRootDirectory)\docs\overview.md"
     />
   </Target>
