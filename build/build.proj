@@ -406,10 +406,8 @@
 
 
 
-  <UsingTask AssemblyFile="doc.tasks.dll" TaskName="SimpleTask.SetEnvironmentVariable" />
-
+  <UsingTask AssemblyFile="$(RepositoryRootDirectory)\tools-local\doc.tasks\bin\Debug\netstandard2.0\doc.tasks.dll" TaskName="NuGetTasks.GenerateMarkdownDoc" />
   <Target Name="GenerateDocs">
-
     <Message Text="@(AllSolutionProjects)" Importance="High" />
 
     <XmlPeek
@@ -420,8 +418,11 @@
 
     <Message Text="@(ProjectDescriptions)" Importance="High" />
 
-
-
+    <GenerateMarkdownDoc
+      ProjectFiles="@(AllSolutionProjects)"
+      Descriptions="@(ProjectDescriptions)"
+      OutputFile="$(RepositoryRootDirectory)\docs\overview.md"
+    />
   </Target>
 
 
