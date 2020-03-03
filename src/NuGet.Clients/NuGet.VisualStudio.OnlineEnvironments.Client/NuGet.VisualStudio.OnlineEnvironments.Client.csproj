@@ -10,7 +10,7 @@
     <IncludeInVsix>true</IncludeInVsix>
     <RootNamespace>NuGet.VisualStudio</RootNamespace>
     <SkipShared>true</SkipShared>
-
+    <Description>NuGet VS Online Environments Client</Description>
     <!-- VSIX -->
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <CreateVsixContainer>false</CreateVsixContainer>
@@ -31,9 +31,15 @@
       <ResourceName>Menus.ctmenu</ResourceName>
       <SubType>Designer</SubType>
     </VSCTCompile>
+    <EmbeddedResource Update="VSPackage.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <ManifestResourceName>VSPackage</ManifestResourceName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
 
   <Import Project="$(BuildCommonDirectory)common.targets" />
+  <Import Project="$(BuildCommonDirectory)embedinterop.targets" />
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(IsXplat)' != 'true' AND '$(IsBuildOnlyXPLATProjects)' != 'true' " />
   <Import Project="$(VSSDKRoot)\build\Microsoft.VSSDK.BuildTools.targets" Condition="'$(IsXplat)' != 'true' AND '$(IsBuildOnlyXPLATProjects)' != 'true' " />
