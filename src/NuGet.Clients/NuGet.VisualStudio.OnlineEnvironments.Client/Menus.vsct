@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <!--  This is the file that defines the actual layout and type of the commands.
@@ -13,33 +13,27 @@
         it is possible to define includes and macros with the same syntax used
         in C++ files. Using this ability of the compiler here, we include some files
         defining some of the constants that we will use inside the file. -->
-
-  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
   <Extern href="stdidcmd.h" />
-
-  <!--This header contains the command ids for the menus provided by the shell. -->
   <Extern href="vsshlids.h" />
-
-  <!--Definition of some VSCT specific constants. In this sample we use it for the IDs inside the guidOfficeIcon group. -->
-  <!--<Extern href="msobtnid.h" xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" />-->
 
   <Commands package="PackageGuidString">
 
     <Groups>
-      <Group guid="guidManagedProjectSystemClientProjectCommandSet" id="groupidEditProjectFile" priority="0x0900">
+      <Group guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="groupidRestoreNuGetPackages" priority="0x0900">
         <Parent guid="guidWorkspaceExplorerToolWindowPackageCmdSet" id="idmWSE_ContextMenu"/>
       </Group>
     </Groups>
 
     <Buttons>
-      <Button guid="guidManagedProjectSystemClientProjectCommandSet" id="cmdidEditProjectFile" priority="0x0100" type="Button">
+      <Button guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="cmdidRestoreNuGetPackages" priority="0x0100" type="Button">
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
-          <ButtonText>Edit Project File</ButtonText>
-          <CommandName>SolutionExplorer.Project.Edit</CommandName>
-          <CanonicalName>SolutionExplorer.Project.Edit</CanonicalName>
-          <LocCanonicalName>SolutionExplorer.Project.Edit</LocCanonicalName>
+          <!-- TODO NK - remember to rename the command name. Consider changing it to something similar to the current one.-->
+          <ButtonText>Do NuGet stuff</ButtonText>
+          <CommandName>SolutionExplorer.Project.RestoreNuGetPackages</CommandName>
+          <CanonicalName>SolutionExplorer.Project.RestoreNuGetPackages</CanonicalName>
+          <LocCanonicalName>SolutionExplorer.Project.RestoreNuGetPackages</LocCanonicalName>
         </Strings>
       </Button>
     </Buttons>
@@ -47,21 +41,19 @@
   </Commands>
 
   <CommandPlacements>
-
-    <CommandPlacement guid="guidManagedProjectSystemClientProjectCommandSet" id="cmdidEditProjectFile" priority="0x0100">
-      <Parent guid="guidManagedProjectSystemClientProjectCommandSet" id="groupidEditProjectFile" />
+    <CommandPlacement guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="cmdidRestoreNuGetPackages" priority="0x0100">
+      <Parent guid="guidNuGetOnlineEnvironmentsClientProjectCommandSet" id="groupidRestoreNuGetPackages" />
     </CommandPlacement>
-  
   </CommandPlacements>
 
   <Symbols>
-    <!-- This is our managed package guid. -->
-    <GuidSymbol name="PackageGuidString" value="{AE74FDFC-B9CE-4948-9E2F-F443B5BE8D37}" />
+    <!-- This is our package guid. -->
+    <GuidSymbol name="PackageGuidString" value="{6431ADB1-9428-4173-A696-6DECA317034A}" />
   
     <!-- Guid and IDs for our commands and groups -->
-    <GuidSymbol name="guidManagedProjectSystemClientProjectCommandSet" value="{28C12D02-11CB-437D-B84D-9CEA7A5333A3}">
-      <IDSymbol name="cmdidEditProjectFile" value="0x0100" />
-      <IDSymbol name="groupidEditProjectFile" value="0x0101" />
+    <GuidSymbol name="guidNuGetOnlineEnvironmentsClientProjectCommandSet" value="{760B5FEF-9F63-4788-A9FC-6B0186690DD1}">
+      <IDSymbol name="cmdidRestoreNuGetPackages" value="0x0100" />
+      <IDSymbol name="groupidRestoreNuGetPackages" value="0x0101" />
     </GuidSymbol>
 
     <!-- Guid and IDs copied from Microsoft.VisualStudio.Workspace.VSIntegration -->

@@ -99,3 +99,8 @@ System.Security.Principal.Windows.dll
 System.Threading.Tasks.Extensions.dll
 System.Web.Http.dll
 VSLangProj157.dll
+
+Microsoft.VisualStudio.Composition.NetFxAttributes.dll
+Microsoft.VisualStudio.Setup.Configuration.Interop.dll
+Microsoft.VisualStudio.Workspace.resources.dll
+Microsoft.VisualStudio.Workspace.Extensions.resources.dll

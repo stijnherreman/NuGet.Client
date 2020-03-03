@@ -1,8 +1,9 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
 
-namespace Microsoft.VisualStudio
+namespace NuGet.VisualStudio.OnlineEnvironments.Client
 {
     /// <summary>
     /// Specifies various constant values needed in the cloud environment.

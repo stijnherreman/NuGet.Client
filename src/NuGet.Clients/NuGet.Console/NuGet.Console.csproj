@@ -37,6 +37,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChannelOutputConsole.cs" />
     <Compile Include="ConsoleInitializer.cs" />
     <Compile Include="DebugConsoleMessageEventArgs.cs" />
     <Compile Include="DisplayNameAttribute.cs" />
@@ -54,7 +55,6 @@
     <Compile Include="ITabExpansion.cs" />
     <Compile Include="IWpfConsole.cs" />
     <Compile Include="IWpfConsoleService.cs" />
-    <Compile Include="OutputConsole\ChannelOutputConsole.cs" />
     <Compile Include="OutputConsole\BuildOutputConsole.cs" />
     <Compile Include="OutputConsole\OutputConsole.cs" />
     <Compile Include="OutputConsole\OutputConsoleProvider.cs" />
