@@ -421,6 +421,9 @@
     <GenerateMarkdownDoc
       ProjectFiles="@(AllSolutionProjects)"
       OutputFile="$(RepositoryRootDirectory)\artifacts\docs-generated\overview.md"
+      GitHubRepositoryUrl="$(RepositoryUrl)"
+      RepositoryRoot="$(RepositoryRootDirectory)"
+      Title="NuGet Project Overview"
     />
   </Target>
 
